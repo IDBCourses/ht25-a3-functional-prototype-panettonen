@@ -11,6 +11,7 @@ import * as Util from "./util.js";
 
 // Code that runs over and over again
 function loop() {
+  Util.setSize(150);
 
   window.requestAnimationFrame(loop);
 }
