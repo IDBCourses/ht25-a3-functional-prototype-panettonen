@@ -69,65 +69,65 @@ function setCubesColor(row, color) {
 
 function keyPressed(event) {
   // Up
-  if (event.code == "KeyW") {
+  if (event.code == keys[1][0]) {
     upKey = true;
   }
   if (upKey == true) {
-    if (event.code == "KeyQ") { // Up - Left
+    if (event.code == keys[0][0]) { // Up - Left
       console.log("Up - Left")
-    } else if (event.code == "KeyE") { // Up - Right
+    } else if (event.code == keys[2][0]) { // Up - Right
       console.log("Up - Right")
     }
   }
 
   // Down
-  if (event.code == "KeyX") {
+  if (event.code == keys[1][2]) {
     downKey = true;
   }
   if (downKey == true) {
-    if (event.code == "KeyZ") { // Down - Left
+    if (event.code == keys[0][2]) { // Down - Left
       console.log("Down - Left")
-    } else if (event.code == "KeyC") { // Down - Right
+    } else if (event.code == keys[2][2]) { // Down - Right
       console.log("Down - Right")
     }
   }
 
   // Left
-  if (event.code == "KeyA") {
+  if (event.code == keys[0][1]) {
     leftKey = true;
   }
   if (leftKey == true) {
-    if (event.code == "KeyQ") { // Left - Up
+    if (event.code == keys[0][0]) { // Left - Up
       console.log("Left - Up")
-    } else if (event.code == "KeyZ") { // Left - Down
+    } else if (event.code == keys[0][2]) { // Left - Down
       console.log("Left - Down")
     }
   }
 
   // Right
-  if (event.code == "KeyD") {
+  if (event.code == keys[2][1]) {
     rightKey = true;
   }
   if (rightKey == true) {
-    if (event.code == "KeyE") { // Right - Up
+    if (event.code == keys[2][0]) { // Right - Up
       console.log("Right - Up")
-    } else if (event.code == "KeyC") { // Right - Down
+    } else if (event.code == keys[2][2]) { // Right - Down
       console.log("Right - Down")
     }
   }
 
   // Center
-  if (event.code == "KeyS") {
+  if (event.code == keys[1][1]) {
     centerKey = true;
   }
   if (centerKey == true) {
-    if (event.code == "KeyW") { // Center - Up
+    if (event.code == keys[1][0]) { // Center - Up
       console.log("Center - Up")
-    } else if (event.code == "KeyX") { // Center - Down
+    } else if (event.code == keys[1][2]) { // Center - Down
       console.log("Center - Down")
-    } else if (event.code == "KeyA") { // Center - Left
+    } else if (event.code == keys[0][1]) { // Center - Left
       console.log("Center - Left")
-    } else if (event.code == "KeyD") { // Center - Right
+    } else if (event.code == keys[2][1]) { // Center - Right
       console.log("Center - Right")
     }
   }
@@ -135,23 +135,23 @@ function keyPressed(event) {
 
 function keyReleased(event) {
   // Up
-  if (event.code == "KeyW") {
+  if (event.code == keys[1][0]) {
     upKey = false;
   }
   // Down
-  if (event.code == "KeyX") {
+  if (event.code == keys[1][2]) {
     downKey = false;
   }
   // Left
-  if (event.code == "KeyA") {
+  if (event.code == keys[0][1]) {
     leftKey = false;
   }
   // Right
-  if (event.code == "KeyD") {
+  if (event.code == keys[2][1]) {
     rightKey = false;
   }
   // Center
-  if (event.code == "KeyS") {
+  if (event.code == keys[1][1]) {
     centerKey = false;
   }
 }
