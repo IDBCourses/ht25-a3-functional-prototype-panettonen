@@ -3,6 +3,18 @@
  *
  */
 
+let upKey = false;
+let downKey = false;
+let leftKey = false;
+let rightKey = false;
+let centerKey = false;
+
+let keys = [
+  ["KeyQ", "KeyA", "KeyZ"],
+  ["KeyW", "KeyS", "KeyX"],
+  ["KeyE", "KeyD", "KeyC"]
+];
+
 let cubeObjects = {};
 let cubes = [];
 
@@ -37,14 +49,14 @@ function createCubeObjects() {
 }
 
 function setCubesObjects() {
-  for (let i1 = 0; i1 < 3; i1++) {
-    for (let i2 = 0; i2 < 3; i2++) {
-      cubes[i1][i2].el.style.width = `${cubeSize}px`;
-      cubes[i1][i2].el.style.height = `${cubeSize}px`;
+  for (let x = 0; x < 3; x++) {
+    for (let y = 0; y < 3; y++) {
+      cubes[x][y].el.style.width = `${cubeSize}px`;
+      cubes[x][y].el.style.height = `${cubeSize}px`;
 
-      cubes[i1][i2].el.style.translate = 
-        `${ cubeSizeMarginX + i1 * cubeSize + i1 * cubeSizeGap }px 
-        ${ cubeSizeMarginY + i2 * cubeSize + i2 * cubeSizeGap }px`
+      cubes[x][y].el.style.translate = 
+        `${ cubeSizeMarginX + x * cubeSize + x * cubeSizeGap }px 
+        ${ cubeSizeMarginY + y * cubeSize + y * cubeSizeGap }px`
     }
   }
 }
@@ -52,6 +64,95 @@ function setCubesObjects() {
 function setCubesColor(row, color) {
   for (let i = 0; i < 3; i++) {
     cubes[i][row].el.style.backgroundColor = color;
+  }
+}
+
+function keyPressed(event) {
+  // Up
+  if (event.code == "KeyW") {
+    upKey = true;
+  }
+  if (upKey == true) {
+    if (event.code == "KeyQ") { // Up - Left
+      console.log("Up - Left")
+    } else if (event.code == "KeyE") { // Up - Right
+      console.log("Up - Right")
+    }
+  }
+
+  // Down
+  if (event.code == "KeyX") {
+    downKey = true;
+  }
+  if (downKey == true) {
+    if (event.code == "KeyZ") { // Down - Left
+      console.log("Down - Left")
+    } else if (event.code == "KeyC") { // Down - Right
+      console.log("Down - Right")
+    }
+  }
+
+  // Left
+  if (event.code == "KeyA") {
+    leftKey = true;
+  }
+  if (leftKey == true) {
+    if (event.code == "KeyQ") { // Left - Up
+      console.log("Left - Up")
+    } else if (event.code == "KeyZ") { // Left - Down
+      console.log("Left - Down")
+    }
+  }
+
+  // Right
+  if (event.code == "KeyD") {
+    rightKey = true;
+  }
+  if (rightKey == true) {
+    if (event.code == "KeyE") { // Right - Up
+      console.log("Right - Up")
+    } else if (event.code == "KeyC") { // Right - Down
+      console.log("Right - Down")
+    }
+  }
+
+  // Center
+  if (event.code == "KeyS") {
+    centerKey = true;
+  }
+  if (centerKey == true) {
+    if (event.code == "KeyW") { // Center - Up
+      console.log("Center - Up")
+    } else if (event.code == "KeyX") { // Center - Down
+      console.log("Center - Down")
+    } else if (event.code == "KeyA") { // Center - Left
+      console.log("Center - Left")
+    } else if (event.code == "KeyD") { // Center - Right
+      console.log("Center - Right")
+    }
+  }
+}
+
+function keyReleased(event) {
+  // Up
+  if (event.code == "KeyW") {
+    upKey = false;
+  }
+  // Down
+  if (event.code == "KeyX") {
+    downKey = false;
+  }
+  // Left
+  if (event.code == "KeyA") {
+    leftKey = false;
+  }
+  // Right
+  if (event.code == "KeyD") {
+    rightKey = false;
+  }
+  // Center
+  if (event.code == "KeyS") {
+    centerKey = false;
   }
 }
 
@@ -70,7 +171,8 @@ function setup() {
   setCubesColor(1, colors.green);
   setCubesColor(2, colors.purple);
 
-  document.addEventListener("keydown", listener)
+  document.addEventListener("keydown", keyPressed);
+  document.addEventListener("keyup", keyReleased);
 
   window.requestAnimationFrame(loop);
 }
