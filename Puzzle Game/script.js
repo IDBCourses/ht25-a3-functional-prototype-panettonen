@@ -5,6 +5,15 @@
 
 let solvedByUser = false;
 
+const zero = 0;
+const timeText = document.getElementById("time");
+
+let timeShow;
+let timeSwitch;
+
+let timeStart;
+let timeElapsed;
+
 let upKey = false;
 let downKey = false;
 let leftKey = false;
@@ -59,7 +68,7 @@ const indicators = {};
 const indicatorSize = cubeSize * 0.4;
 const indicatorMargin = cubeSize * 1.05;
 
-const indicatorSolvedSize = cubeSize * 0.5; 
+const indicatorSolvedSize = cubeSize * 0.25; 
 const indicatorSolvedMargin = cubeSize * 0.6; 
 
 // Code that runs over and over again
@@ -68,18 +77,28 @@ function loop() {
   drawCubes();
 
   if (resetCube) {
-    solvedByUser = false;
     resetColors();
+    solvedByUser = false;
+    timeSwitch = false;
+    timeShow = zero.toFixed(2);
     resetCube = false;
   }
 
   if (randomize) {
-    solvedByUser = true;
     randomizeColors(50);
+    solvedByUser = true;
+    timeStart = performance.now();
+    timeSwitch = true;
     randomize = false;
   }
 
+  if (timeSwitch) {
+    timeElapsed = performance.now() - timeStart;
+    timeShow = (timeElapsed / 1000).toFixed(2);
+  }
+
   checkIfSolved();
+  drawTimeText();
 
   window.requestAnimationFrame(loop);
 }
@@ -210,9 +229,23 @@ function checkIfSolved() {
   
   if (firstRowSolved.length == 3 && secondRowSolved.length == 3 && thirdRowSolved.length == 3 && solvedByUser) {
     indicators.s.el.style.backgroundColor = colors.green;
+    timeSwitch = false;
   } else {
     indicators.s.el.style.backgroundColor = "unset";
   }
+}
+
+function drawTimeText() {
+  timeText.style.translate = 
+    `${ cubeSizeMarginX }px 
+    ${ cubeSizeMarginY + 3 * cubeSize + 3 * cubeSizeGap + cubeSize * 0.4 }px`
+  
+  timeText.style.fontSize = `${cubeSize / 30}em`;
+  timeText.style.color = "#ffffff";
+  timeText.style.backgroundColor = "unset";
+  timeText.textContent = timeShow;
+  timeText.style.fontFamily = "JetBrains Mono";
+  timeText.style.fontWeight = "500";
 }
 
 
@@ -280,6 +313,7 @@ function setIndicator(ind, row) {
 function setIndicatorSolved() {
   indicators.s.el.style.width = `${ indicatorSolvedSize }px`;
   indicators.s.el.style.height = `${ indicatorSolvedSize }px`;
+  indicators.s.el.style.borderRadius = "50%";
 
   indicators.s.el.style.translate = 
     `${ cubeSizeMarginX + 3 * cubeSize + 3 * cubeSizeGap + indicatorSolvedMargin }px 
