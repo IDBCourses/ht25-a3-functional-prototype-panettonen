@@ -41,17 +41,16 @@ let resetCube = false;
 let cubeObjects = {};
 let cubes = [];
 
-const cubeSize = 75;
-const cubeSizeGap = 5;
+const cubeSize = 70;
+const cubeSizeGap = 8;
 const cubeSizeMarginX = 170;
 const cubeSizeMarginY = 100;
 
 const colors = {
-  orange: "#E69875",
-  green: "#A7C080",
-  purple: "#D699B6",
-  yellow: "#DBBC7F",
-  red: "#E67E80",
+  orange: "#FB9966",
+  blue: "#33A6B8",
+  white: "#FFFFFF",
+  green: "#A7C080"
 };
 
 const indicators = {};
@@ -194,13 +193,13 @@ function checkIfSolved() {
   let thirdRowSolved = [];
 
   for (let i = 0; i < 3; i++) {
-    if (cubes[i][0].color == colors.orange) {
+    if (cubes[i][0].color == colors.blue) {
       firstRowSolved.push(1);
     }
-    if (cubes[i][1].color == colors.yellow) {
+    if (cubes[i][1].color == colors.orange) {
       secondRowSolved.push(1);
     }
-    if (cubes[i][2].color == colors.purple) {
+    if (cubes[i][2].color == colors.white) {
       thirdRowSolved.push(1);
     }
   }
@@ -208,7 +207,7 @@ function checkIfSolved() {
   if (firstRowSolved.length == 3 && secondRowSolved.length == 3 && thirdRowSolved.length == 3) {
     indicators.s.el.style.backgroundColor = colors.green;
   } else {
-    indicators.s.el.style.backgroundColor = colors.red;
+    indicators.s.el.style.backgroundColor = "unset";
   }
 }
 
@@ -242,13 +241,13 @@ function setCubesColor(row, color) {
 }
 
 function resetColors() {
-  setCubesColor(0, colors.orange);
-  setCubesColor(1, colors.yellow);
-  setCubesColor(2, colors.purple);
+  setCubesColor(0, colors.blue);
+  setCubesColor(1, colors.orange);
+  setCubesColor(2, colors.white);
 
-  indicators.r1.el.style.backgroundColor = colors.orange;
-  indicators.r2.el.style.backgroundColor = colors.yellow;
-  indicators.r3.el.style.backgroundColor = colors.purple;
+  indicators.r1.el.style.backgroundColor = colors.blue;
+  indicators.r2.el.style.backgroundColor = colors.orange;
+  indicators.r3.el.style.backgroundColor = colors.white;
 
   indicators.s.el.style.backgroundColor = "unset";
 }
