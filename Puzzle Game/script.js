@@ -56,6 +56,9 @@ const indicators = {};
 const indicatorSize = cubeSize * 0.4;
 const indicatorMargin = cubeSize * 1.05;
 
+const indicatorSolvedSize = cubeSize * 0.5; 
+const indicatorSolvedMargin = cubeSize * 0.6; 
+
 // Code that runs over and over again
 function loop() {
   moveColors();
@@ -220,11 +223,15 @@ function resetColors() {
   indicators.r3.el.style.backgroundColor = colors.purple;
 }
 
-function createIndicator() {
+function createIndicators() {
   for (let i = 1; i <= 3; i++) {
     indicators[`r${i}`] = {
       el: document.getElementById(`ind${i}`)
     }
+  }
+
+  indicators["s"] = {
+    el: document.getElementById("ind-solved")
   }
 }
 
@@ -235,7 +242,15 @@ function setIndicator(ind, row) {
   ind.el.style.translate = 
     `${ cubeSizeMarginX - indicatorMargin }px 
     ${ cubeSizeMarginY + cubeSize / 2 - indicatorSize / 2 + row * cubeSize + row * cubeSizeGap }px`
-    
+}
+
+function setIndicatorSolved() {
+  indicators.s.el.style.width = `${ indicatorSolvedSize }px`;
+  indicators.s.el.style.height = `${ indicatorSolvedSize }px`;
+
+  indicators.s.el.style.translate = 
+    `${ cubeSizeMarginX + 3 * cubeSize + 3 * cubeSizeGap + indicatorSolvedMargin }px 
+    ${ cubeSizeMarginY + 2 * cubeSize + 2 * cubeSizeGap + cubeSize - indicatorSolvedSize }px`
 }
 
 function keyPressed(event) {
@@ -347,10 +362,11 @@ function setup() {
 
   setCubesObjects();
 
-  createIndicator();
+  createIndicators();
   setIndicator(indicators.r1, 0);
   setIndicator(indicators.r2, 1);
   setIndicator(indicators.r3, 2);
+  setIndicatorSolved();
 
   resetColors();
 
