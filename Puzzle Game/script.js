@@ -49,7 +49,9 @@ const cubeSizeMarginY = 100;
 const colors = {
   orange: "#E69875",
   green: "#A7C080",
-  purple: "#D699B6"
+  purple: "#D699B6",
+  yellow: "#DBBC7F",
+  red: "#E67E80",
 };
 
 const indicators = {};
@@ -215,11 +217,11 @@ function setCubesColor(row, color) {
 
 function resetColors() {
   setCubesColor(0, colors.orange);
-  setCubesColor(1, colors.green);
+  setCubesColor(1, colors.yellow);
   setCubesColor(2, colors.purple);
 
   indicators.r1.el.style.backgroundColor = colors.orange;
-  indicators.r2.el.style.backgroundColor = colors.green;
+  indicators.r2.el.style.backgroundColor = colors.yellow;
   indicators.r3.el.style.backgroundColor = colors.purple;
 }
 
