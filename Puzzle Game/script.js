@@ -76,6 +76,8 @@ function loop() {
     randomize = false;
   }
 
+  checkIfSolved();
+
   window.requestAnimationFrame(loop);
 }
 
@@ -186,6 +188,30 @@ function switchTwoColors(position1, position2) {
   cubes[p2[0]][p2[1]].color = tempColor1;
 }
 
+function checkIfSolved() {
+  let firstRowSolved = [];
+  let secondRowSolved = [];
+  let thirdRowSolved = [];
+
+  for (let i = 0; i < 3; i++) {
+    if (cubes[i][0].color == colors.orange) {
+      firstRowSolved.push(1);
+    }
+    if (cubes[i][1].color == colors.yellow) {
+      secondRowSolved.push(1);
+    }
+    if (cubes[i][2].color == colors.purple) {
+      thirdRowSolved.push(1);
+    }
+  }
+  
+  if (firstRowSolved.length == 3 && secondRowSolved.length == 3 && thirdRowSolved.length == 3) {
+    indicators.s.el.style.backgroundColor = colors.green;
+  } else {
+    indicators.s.el.style.backgroundColor = colors.red;
+  }
+}
+
 
 function createCubeObjects() {
   for (let i = 1; i <= 9; i++) {
@@ -223,6 +249,8 @@ function resetColors() {
   indicators.r1.el.style.backgroundColor = colors.orange;
   indicators.r2.el.style.backgroundColor = colors.yellow;
   indicators.r3.el.style.backgroundColor = colors.purple;
+
+  indicators.s.el.style.backgroundColor = "unset";
 }
 
 function createIndicators() {
@@ -371,6 +399,7 @@ function setup() {
   setIndicatorSolved();
 
   resetColors();
+  randomizeColors(50);
 
   document.addEventListener("keydown", keyPressed);
   document.addEventListener("keyup", keyReleased);
