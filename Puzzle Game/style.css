@@ -3,6 +3,11 @@
     position: absolute;
 }
 
+.uis {
+    background-color: #374145;
+    position: absolute;
+}
+
 /* Prevent padding and border from affecting element width. */
 *,
 ::before,

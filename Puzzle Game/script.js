@@ -37,7 +37,7 @@ let cubes = [];
 
 const cubeSize = 75;
 const cubeSizeGap = 5;
-const cubeSizeMarginX = 100;
+const cubeSizeMarginX = 170;
 const cubeSizeMarginY = 100;
 
 const colors = {
@@ -45,6 +45,10 @@ const colors = {
   green: "#A7C080",
   purple: "#D699B6"
 };
+
+const indicators = {};
+const indicatorSize = cubeSize * 0.4;
+const indicatorMargin = cubeSize * 1.05;
 
 // Code that runs over and over again
 function loop() {
@@ -154,10 +158,32 @@ function setCubesColor(row, color) {
   }
 }
 
-function resetCubesColor() {
+function resetColors() {
   setCubesColor(0, colors.orange);
   setCubesColor(1, colors.green);
   setCubesColor(2, colors.purple);
+
+  indicators.r1.el.style.backgroundColor = colors.orange;
+  indicators.r2.el.style.backgroundColor = colors.green;
+  indicators.r3.el.style.backgroundColor = colors.purple;
+}
+
+function createIndicator() {
+  for (let i = 1; i <= 3; i++) {
+    indicators[`r${i}`] = {
+      el: document.getElementById(`ind${i}`)
+    }
+  }
+}
+
+function setIndicator(ind, row) {
+  ind.el.style.width = `${indicatorSize}px`;
+  ind.el.style.height = `${indicatorSize}px`;
+  
+  ind.el.style.translate = 
+    `${ cubeSizeMarginX - indicatorMargin }px 
+    ${ cubeSizeMarginY + cubeSize / 2 - indicatorSize / 2 + row * cubeSize + row * cubeSizeGap }px`
+    
 }
 
 function keyPressed(event) {
@@ -260,7 +286,13 @@ function setup() {
   ];
 
   setCubesObjects();
-  resetCubesColor();
+
+  createIndicator();
+  setIndicator(indicators.r1, 0);
+  setIndicator(indicators.r2, 1);
+  setIndicator(indicators.r3, 2);
+
+  resetColors();
 
   document.addEventListener("keydown", keyPressed);
   document.addEventListener("keyup", keyReleased);
