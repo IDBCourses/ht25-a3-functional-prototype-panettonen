@@ -181,7 +181,7 @@ function randomizeColors(turns) {
     let samePosition = true;
 
     while (samePosition) {
-      if (pos1[0] == pos2[0] && pos1[1] == pos2[1]) {
+      if (pos1.x == pos2.x && pos1.y == pos2.y) {
         pos2 = getRandomPos();
       } else {
         samePosition = false;
@@ -193,21 +193,21 @@ function randomizeColors(turns) {
 }
 
 function getRandomPos() {
-  let x = Math.floor(Math.random() * 3);
-  let y = Math.floor(Math.random() * 3);
+  let xValue = Math.floor(Math.random() * 3);
+  let yValue = Math.floor(Math.random() * 3);
 
-  return [x, y];
+  return {x: xValue, y: yValue};
 }
 
 function switchTwoColors(position1, position2) {
   const p1 = position1;
   const p2 = position2;
 
-  let tempColor1 = cubes[p1[0]][p1[1]].color;
-  let tempColor2 = cubes[p2[0]][p2[1]].color;
+  let tempColor1 = cubes[p1.x][p1.y].color;
+  let tempColor2 = cubes[p2.x][p2.y].color;
 
-  cubes[p1[0]][p1[1]].color = tempColor2;
-  cubes[p2[0]][p2[1]].color = tempColor1;
+  cubes[p1.x][p1.y].color = tempColor2;
+  cubes[p2.x][p2.y].color = tempColor1;
 }
 
 function checkIfSolved() {
