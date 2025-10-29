@@ -32,6 +32,12 @@ let keys = [
   ["KeyE", "KeyD", "KeyC"]
 ];
 
+const randomizeKey = "Space";
+let randomize = false;
+
+const resetKey = "Enter";
+let resetCube = false;
+
 let cubeObjects = {};
 let cubes = [];
 
@@ -54,6 +60,16 @@ const indicatorMargin = cubeSize * 1.05;
 function loop() {
   moveColors();
   drawCubes();
+
+  if (resetCube) {
+    resetColors();
+    resetCube = false;
+  }
+
+  if (randomize) {
+    randomizeColors(50);
+    randomize = false;
+  }
 
   window.requestAnimationFrame(loop);
 }
@@ -129,6 +145,42 @@ function drawCubes() {
   }
 }
 
+function randomizeColors(turns) {
+  for (let i = 0; i < turns; i++) {
+    let pos1 = getRandomPos();
+    let pos2 = getRandomPos();
+    let samePosition = true;
+
+    while (samePosition) {
+      if (pos1[0] == pos2[0] && pos1[1] == pos2[1]) {
+        pos2 = getRandomPos();
+      } else {
+        samePosition = false;
+      }
+    }
+
+    switchTwoColors(pos1, pos2);
+  }
+}
+
+function getRandomPos() {
+  let x = Math.floor(Math.random() * 3);
+  let y = Math.floor(Math.random() * 3);
+
+  return [x, y];
+}
+
+function switchTwoColors(position1, position2) {
+  const p1 = position1;
+  const p2 = position2;
+
+  let tempColor1 = cubes[p1[0]][p1[1]].color;
+  let tempColor2 = cubes[p2[0]][p2[1]].color;
+
+  cubes[p1[0]][p1[1]].color = tempColor2;
+  cubes[p2[0]][p2[1]].color = tempColor1;
+}
+
 
 function createCubeObjects() {
   for (let i = 1; i <= 9; i++) {
@@ -177,8 +229,8 @@ function createIndicator() {
 }
 
 function setIndicator(ind, row) {
-  ind.el.style.width = `${indicatorSize}px`;
-  ind.el.style.height = `${indicatorSize}px`;
+  ind.el.style.width = `${ indicatorSize }px`;
+  ind.el.style.height = `${ indicatorSize }px`;
   
   ind.el.style.translate = 
     `${ cubeSizeMarginX - indicatorMargin }px 
@@ -249,6 +301,14 @@ function keyPressed(event) {
     } else if (event.code == keys[2][1]) { // Center - Right
       moves.centerRight = true;
     }
+  }
+
+  if (event.code == resetKey) {
+    resetCube = true;
+  }
+
+  if (event.code == randomizeKey) {
+    randomize = true;
   }
 }
 
