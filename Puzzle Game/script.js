@@ -3,6 +3,8 @@
  *
  */
 
+let solvedByUser = false;
+
 let upKey = false;
 let downKey = false;
 let leftKey = false;
@@ -66,11 +68,13 @@ function loop() {
   drawCubes();
 
   if (resetCube) {
+    solvedByUser = false;
     resetColors();
     resetCube = false;
   }
 
   if (randomize) {
+    solvedByUser = true;
     randomizeColors(50);
     randomize = false;
   }
@@ -204,7 +208,7 @@ function checkIfSolved() {
     }
   }
   
-  if (firstRowSolved.length == 3 && secondRowSolved.length == 3 && thirdRowSolved.length == 3) {
+  if (firstRowSolved.length == 3 && secondRowSolved.length == 3 && thirdRowSolved.length == 3 && solvedByUser) {
     indicators.s.el.style.backgroundColor = colors.green;
   } else {
     indicators.s.el.style.backgroundColor = "unset";
@@ -398,7 +402,6 @@ function setup() {
   setIndicatorSolved();
 
   resetColors();
-  randomizeColors(50);
 
   document.addEventListener("keydown", keyPressed);
   document.addEventListener("keyup", keyReleased);
