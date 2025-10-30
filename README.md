@@ -20,11 +20,11 @@ Z X C
 
 Press and hold one of these key to select what row or column you want to move: 
 
-`W` - Up
-`X` - Down
-`A` - Left
-`D` - Right
-`S` - Center
+`W` - Up  
+`X` - Down  
+`A` - Left  
+`D` - Right  
+`S` - Center  
 
 Then by selecting a key near the key you are holding down, the cubes move in the direction of the newly pressed key. 
 
