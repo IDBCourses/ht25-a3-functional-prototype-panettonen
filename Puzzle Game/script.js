@@ -1,10 +1,14 @@
 /*
- * IDB Programming: Code Playground
+ * Puzzle Game
  *
+ * IxD HT25
+ * A3: Functional Prototype
+ * 
  */
 
 let solvedByUser = false;
 
+// Timer
 const zero = 0;
 const timeText = document.getElementById("time");
 
@@ -14,6 +18,10 @@ let timeSwitch;
 let timeStart;
 let timeElapsed;
 
+let hideTimer = false;
+let hideTimerKey = "t";
+
+// Keys
 let upKey = false;
 let downKey = false;
 let leftKey = false;
@@ -49,6 +57,7 @@ let randomize = false;
 const resetKey = "Enter";
 let resetCube = false;
 
+// Cubes
 let cubeObjects = {};
 let cubes = [];
 
@@ -64,6 +73,7 @@ const colors = {
   green: "#A7C080"
 };
 
+// Indicators
 const indicators = {};
 const indicatorSize = cubeSize * 0.4;
 const indicatorMargin = cubeSize * 1.05;
@@ -240,8 +250,13 @@ function drawTimeText() {
     `${ cubeSizeMarginX }px 
     ${ cubeSizeMarginY + 3 * cubeSize + 3 * cubeSizeGap + cubeSize * 0.4 }px`
   
+  if (hideTimer) {
+    timeText.style.color = "unset";
+  } else {
+    timeText.style.color = "#ffffff";
+  }
+  
   timeText.style.fontSize = `${cubeSize / 30}em`;
-  timeText.style.color = "#ffffff";
   timeText.style.backgroundColor = "unset";
   timeText.textContent = timeShow;
   timeText.style.fontFamily = "JetBrains Mono";
@@ -391,6 +406,14 @@ function keyPressed(event) {
 
   if (event.code == randomizeKey) {
     randomize = true;
+  }
+
+  if (event.key == hideTimerKey) {
+    if (hideTimer) {
+      hideTimer = false;
+    } else {
+      hideTimer = true;
+    }
   }
 }
 
