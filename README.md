@@ -8,7 +8,7 @@ This game is inspired by the Rubik's cube.
 
 ### Controls:
 
-T - Hide/show timer
+`T` - Hide/show timer
 
 #### Keys used for controlling the cube:
 
