@@ -45,11 +45,47 @@ const moves = {
   centerRight: false
 };
 
+// keys[x][y] - Reversed the list so the first number is x
 let keys = [
   ["KeyQ", "KeyA", "KeyZ"],
   ["KeyW", "KeyS", "KeyX"],
   ["KeyE", "KeyD", "KeyC"]
 ];
+
+// keysColor[y][x] - List not reversed
+let keyRowsMap = [
+  ["Digit6", "Digit7", "Digit8", "Digit9"],
+  ["KeyY", "KeyU", "KeyI", "KeyO"],
+  ["KeyH", "KeyJ", "KeyK", "KeyL"],
+  ["KeyN", "KeyM", "Comma", "Period"]
+]
+
+const keyRows = {
+  r1: {
+    press: false,
+    havePressed: false,
+    time: null
+  },
+  r2: {
+    press: false,
+    havePressed: false,
+    time: null
+  },
+  r3: {
+    press: false,
+    havePressed: false,
+    time: null
+  },
+  r4: {
+    press: false,
+    havePressed: false,
+    time: null
+  }
+}
+
+const keyRowsAmount = Object.keys(keyRows).length;
+const swipeRowsTimeLimit = 200;
+let haveSwiped = false;
 
 const randomizeKey = "Space";
 let randomize = false;
@@ -66,13 +102,6 @@ const cubeSizeGap = 8;
 const cubeSizeMarginX = 170;
 const cubeSizeMarginY = 100;
 
-const colors = {
-  orange: "#FB9966",
-  blue: "#33A6B8",
-  white: "#FFFFFF",
-  green: "#A7C080"
-};
-
 // Indicators
 const indicators = {};
 const indicatorSize = cubeSize * 0.4;
@@ -81,8 +110,44 @@ const indicatorMargin = cubeSize * 1.05;
 const indicatorSolvedSize = cubeSize * 0.25; 
 const indicatorSolvedMargin = cubeSize * 0.6; 
 
+// Colors
+const colors = {
+  scheme1: {
+    c1: "#33A6B8",
+    c2: "#FB9966",
+    c3: "#FFFFFF",
+    solved: "#A7C080",
+    text: "#FFFFFF"
+  },
+  scheme2: {
+    c1: "#F5ECC2",
+    c2: "#F3A257",
+    c3: "#B09F36",
+    solved: "#B09F36",
+    text: "#F5ECC2"
+  }, 
+  scheme3: {
+    c1: "#FDD4BD",
+    c2: "#B2B73E",
+    c3: "#B4CDC2",
+    solved: "#B2B73E",
+    text: "#D7D7D7"
+  }
+};
+
+let currentColors = colors.scheme1;
+let prevColors;
+
+
 // Code that runs over and over again
 function loop() {
+  checkRowSwipe();
+
+  if (haveSwiped) {
+    changeColorScheme();
+    haveSwiped = false;
+  }
+
   moveColors();
   drawCubes();
 
@@ -91,6 +156,7 @@ function loop() {
     solvedByUser = false;
     timeSwitch = false;
     timeShow = zero.toFixed(2);
+
     resetCube = false;
   }
 
@@ -99,6 +165,7 @@ function loop() {
     solvedByUser = true;
     timeStart = performance.now();
     timeSwitch = true;
+
     randomize = false;
   }
 
@@ -111,6 +178,80 @@ function loop() {
   drawTimeText();
 
   window.requestAnimationFrame(loop);
+}
+
+
+function checkRowSwipe() {
+  getKeyRowsTime();
+
+  const row1Row2 = checkTimeDiff(keyRows.r1, keyRows.r2);
+  const row2Row3 = checkTimeDiff(keyRows.r2, keyRows.r3);
+  const row3Row4 = checkTimeDiff(keyRows.r3, keyRows.r4);
+
+  if (row1Row2 && row2Row3 || row2Row3 && row3Row4) {
+    haveSwiped = true;
+
+    // console.log(`${ keyRows.r2.time - keyRows.r1.time }`);
+    // console.log(`${ keyRows.r3.time - keyRows.r2.time }`);
+    // console.log(`${ keyRows.r4.time - keyRows.r3.time }`);
+
+    // Remove the saved time for when the keys was pressed
+    for (let i = 1; i <= keyRowsAmount; i++) {
+      keyRows[`r${ i }`].time = null;
+    }
+  }
+}
+
+function getKeyRowsTime() {
+  for (let i = 1; i <= keyRowsAmount; i++) {
+    const row = `r${ i }`;
+
+    if (keyRows[row].press) {
+      if (!keyRows[row].havePressed) {
+        keyRows[row].time = performance.now();
+        keyRows[row].havePressed = true; // keyUp event make it false again
+        
+        // console.log(`Row ${ i } - ${ keyRows[row].time }`);
+      }
+    }
+  }
+}
+
+function checkTimeDiff(row1, row2) {
+  if (row2.time - row1.time < swipeRowsTimeLimit && 
+      row2.time - row1.time > 0) {
+    return true;
+  } else {
+    return false;
+  }
+}
+
+function changeColorScheme() {
+  prevColors = currentColors;
+
+  if (currentColors == colors.scheme1) {
+    currentColors = colors.scheme2;
+  } else if (currentColors == colors.scheme2) {
+    currentColors = colors.scheme3;
+  } else if (currentColors == colors.scheme3) {
+    currentColors = colors.scheme1;
+  }
+
+  for (let x = 0; x < 3; x++) {
+    for (let y = 0; y < 3; y++) {
+      if (cubes[x][y].color == prevColors.c1) {
+        cubes[x][y].color = currentColors.c1;
+      } else if (cubes[x][y].color == prevColors.c2) {
+        cubes[x][y].color = currentColors.c2;
+      } else if (cubes[x][y].color == prevColors.c3) {
+        cubes[x][y].color = currentColors.c3;
+      }
+    }
+  }
+
+  indicators.r1.el.style.backgroundColor = currentColors.c1;
+  indicators.r2.el.style.backgroundColor = currentColors.c2;
+  indicators.r3.el.style.backgroundColor = currentColors.c3;
 }
 
 function moveColors() {
@@ -226,19 +367,22 @@ function checkIfSolved() {
   let thirdRowSolved = [];
 
   for (let i = 0; i < 3; i++) {
-    if (cubes[i][0].color == colors.blue) {
+    if (cubes[i][0].color == currentColors.c1) {
       firstRowSolved.push(1);
     }
-    if (cubes[i][1].color == colors.orange) {
+    if (cubes[i][1].color == currentColors.c2) {
       secondRowSolved.push(1);
     }
-    if (cubes[i][2].color == colors.white) {
+    if (cubes[i][2].color == currentColors.c3) {
       thirdRowSolved.push(1);
     }
   }
   
-  if (firstRowSolved.length == 3 && secondRowSolved.length == 3 && thirdRowSolved.length == 3 && solvedByUser) {
-    indicators.s.el.style.backgroundColor = colors.green;
+  if (firstRowSolved.length == 3 && 
+      secondRowSolved.length == 3 && 
+      thirdRowSolved.length == 3 && 
+      solvedByUser) {
+    indicators.s.el.style.backgroundColor = currentColors.solved;
     timeSwitch = false;
   } else {
     indicators.s.el.style.backgroundColor = "unset";
@@ -253,10 +397,10 @@ function drawTimeText() {
   if (hideTimer) {
     timeText.style.color = "unset";
   } else {
-    timeText.style.color = "#ffffff";
+    timeText.style.color = currentColors.text;
   }
   
-  timeText.style.fontSize = `${cubeSize / 30}em`;
+  timeText.style.fontSize = `${ cubeSize / 30 }em`;
   timeText.style.backgroundColor = "unset";
   timeText.textContent = timeShow;
   timeText.style.fontFamily = "JetBrains Mono";
@@ -266,8 +410,8 @@ function drawTimeText() {
 
 function createCubeObjects() {
   for (let i = 1; i <= 9; i++) {
-    cubeObjects[`c${i}`] = {
-      el: document.getElementById(`cube${i}`),
+    cubeObjects[`c${ i }`] = {
+      el: document.getElementById(`cube${ i }`),
       color: ""
     }
   }
@@ -276,8 +420,8 @@ function createCubeObjects() {
 function setCubesObjects() {
   for (let x = 0; x < 3; x++) {
     for (let y = 0; y < 3; y++) {
-      cubes[x][y].el.style.width = `${cubeSize}px`;
-      cubes[x][y].el.style.height = `${cubeSize}px`;
+      cubes[x][y].el.style.width = `${ cubeSize }px`;
+      cubes[x][y].el.style.height = `${ cubeSize }px`;
 
       cubes[x][y].el.style.translate = 
         `${ cubeSizeMarginX + x * cubeSize + x * cubeSizeGap }px 
@@ -293,21 +437,21 @@ function setCubesColor(row, color) {
 }
 
 function resetColors() {
-  setCubesColor(0, colors.blue);
-  setCubesColor(1, colors.orange);
-  setCubesColor(2, colors.white);
+  setCubesColor(0, currentColors.c1);
+  setCubesColor(1, currentColors.c2);
+  setCubesColor(2, currentColors.c3);
 
-  indicators.r1.el.style.backgroundColor = colors.blue;
-  indicators.r2.el.style.backgroundColor = colors.orange;
-  indicators.r3.el.style.backgroundColor = colors.white;
+  indicators.r1.el.style.backgroundColor = currentColors.c1;
+  indicators.r2.el.style.backgroundColor = currentColors.c2;
+  indicators.r3.el.style.backgroundColor = currentColors.c3;
 
   indicators.s.el.style.backgroundColor = "unset";
 }
 
 function createIndicators() {
   for (let i = 1; i <= 3; i++) {
-    indicators[`r${i}`] = {
-      el: document.getElementById(`ind${i}`)
+    indicators[`r${ i }`] = {
+      el: document.getElementById(`ind${ i }`)
     }
   }
 
@@ -400,19 +544,31 @@ function keyPressed(event) {
     }
   }
 
+  // Reset
   if (event.code == resetKey) {
     resetCube = true;
   }
 
+  // Random
   if (event.code == randomizeKey) {
     randomize = true;
   }
 
+  // Timer
   if (event.key == hideTimerKey) {
     if (hideTimer) {
       hideTimer = false;
     } else {
       hideTimer = true;
+    }
+  }
+
+  // Rows
+  for (let i = 0; i < keyRowsAmount; i++) {
+    const row = `r${ i + 1 }`;
+
+    if (keyRowsMap[i].includes(event.code)) {
+      keyRows[row].press = true;
     }
   }
 }
@@ -437,6 +593,15 @@ function keyReleased(event) {
   // Center
   if (event.code == keys[1][1]) {
     centerKey = false;
+  }
+  // Rows
+  for (let i = 0; i < keyRowsAmount; i++) {
+    const row = `r${ i + 1 }`;
+
+    if (keyRowsMap[i].includes(event.code)) {
+      keyRows[row].press = false;
+      keyRows[row].havePressed = false;
+    }
   }
 }
 
