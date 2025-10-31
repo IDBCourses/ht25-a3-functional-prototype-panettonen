@@ -189,6 +189,7 @@ function loop() {
   checkIfSolved();
   drawTimeText();
   drawMovesText();
+  setIndicatorSolved();
 
   window.requestAnimationFrame(loop);
 }
@@ -514,12 +515,22 @@ function setIndicator(ind, row) {
 }
 
 function setIndicatorSolved() {
-  indicators.s.el.style.width = `${ indicatorSolvedSize }px`;
-  indicators.s.el.style.height = `${ indicatorSolvedSize }px`;
+  let xPos;
+  let indSize = indicatorSolvedSize;
+
+  if (hideTimer && hideMoves) {
+    indSize *= 1.2;
+    xPos = cubeSizeMarginX + 3 * cubeSize + 2 * cubeSizeGap - indSize;
+  } else {
+    xPos = cubeSizeMarginX + 3 * cubeSize + 3 * cubeSizeGap + indicatorSolvedMargin;
+  }
+
+  indicators.s.el.style.width = `${ indSize }px`;
+  indicators.s.el.style.height = `${ indSize }px`;
   indicators.s.el.style.borderRadius = "50%";
 
   indicators.s.el.style.translate = 
-    `${ cubeSizeMarginX + 3 * cubeSize + 3 * cubeSizeGap + indicatorSolvedMargin }px 
+    `${ xPos }px 
     ${ cubeSizeMarginY + 3 * cubeSize + 3 * cubeSizeGap + cubeSize * 0.4 + cubeSize / 4 - indicatorSolvedSize / 2 + cubeSize * 0.085 }px` // cubeSize * 0.085 is for ofsetting for the font Jetbrains Mono
 }
 
