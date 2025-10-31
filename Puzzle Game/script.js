@@ -7,12 +7,13 @@
  */
 
 let solvedByUser = false;
+let puzzleSolved = false; // When true: Moves don't count
 
 // Timer
 const zero = 0;
 const timeText = document.getElementById("time");
 
-let timeShow;
+let timeShow = zero.toFixed(2);
 let timeSwitch;
 
 let timeStart;
@@ -20,6 +21,13 @@ let timeElapsed;
 
 let hideTimer = false;
 let hideTimerKey = "t";
+
+// Moves
+const movesText = document.getElementById("moves");
+
+let movesTotal = 0;
+let hideMoves = false;
+let hideMovesKey = "v";
 
 // Keys
 let upKey = false;
@@ -156,6 +164,8 @@ function loop() {
     solvedByUser = false;
     timeSwitch = false;
     timeShow = zero.toFixed(2);
+    movesTotal = 0;
+    puzzleSolved = false;
 
     resetCube = false;
   }
@@ -165,6 +175,8 @@ function loop() {
     solvedByUser = true;
     timeStart = performance.now();
     timeSwitch = true;
+    movesTotal = 0;
+    puzzleSolved = false;
 
     randomize = false;
   }
@@ -176,6 +188,7 @@ function loop() {
 
   checkIfSolved();
   drawTimeText();
+  drawMovesText();
 
   window.requestAnimationFrame(loop);
 }
@@ -315,6 +328,10 @@ function move(x1, y1, x2, y2, x3, y3) {
   cubes[x1][y1].color = temp3;
   cubes[x2][y2].color = temp1;
   cubes[x3][y3].color = temp2;
+
+  if (!puzzleSolved) {
+    movesTotal++;
+  }
 }
 
 function drawCubes() {
@@ -329,7 +346,7 @@ function randomizeColors(turns) {
   for (let i = 0; i < turns; i++) {
     let pos1 = getRandomPos();
     let pos2 = getRandomPos();
-    let samePosition = true;
+    let samePosition = true; // To get into the loop
 
     while (samePosition) {
       if (pos1.x == pos2.x && pos1.y == pos2.y) {
@@ -384,27 +401,54 @@ function checkIfSolved() {
       solvedByUser) {
     indicators.s.el.style.backgroundColor = currentColors.solved;
     timeSwitch = false;
+    puzzleSolved = true;
   } else {
     indicators.s.el.style.backgroundColor = "unset";
   }
 }
 
 function drawTimeText() {
-  timeText.style.translate = 
-    `${ cubeSizeMarginX }px 
-    ${ cubeSizeMarginY + 3 * cubeSize + 3 * cubeSizeGap + cubeSize * 0.4 }px`
-  
   if (hideTimer) {
     timeText.style.color = "unset";
   } else {
     timeText.style.color = currentColors.text;
   }
   
-  timeText.style.fontSize = `${ cubeSize / 30 }em`;
+  timeText.style.fontSize = `${ cubeSize / 2 }px`;
   timeText.style.backgroundColor = "unset";
   timeText.textContent = timeShow;
   timeText.style.fontFamily = "JetBrains Mono";
-  timeText.style.fontWeight = "500";
+  timeText.style.fontWeight = "600";
+
+  timeText.style.translate = 
+    `${ cubeSizeMarginX + 3 * cubeSize + 2 * cubeSizeGap - timeText.offsetWidth}px 
+    ${ cubeSizeMarginY + 3 * cubeSize + 3 * cubeSizeGap + cubeSize * 0.4 }px`
+}
+
+function drawMovesText() {
+  let movesTextMargin;
+
+  if (hideMoves) {
+    movesText.style.color = "unset";
+  } else {
+    movesText.style.color = currentColors.text;
+  }
+  
+  movesText.style.fontSize = `${ cubeSize / 2 }px`;
+  movesText.style.backgroundColor = "unset";
+  movesText.textContent = movesTotal;
+  movesText.style.fontFamily = "JetBrains Mono";
+  movesText.style.fontWeight = "400";
+
+  if (hideTimer) {
+    movesTextMargin = 0;
+  } else {
+    movesTextMargin = cubeSize / 2 + cubeSize * 0.15;
+  }
+
+  movesText.style.translate = 
+    `${ cubeSizeMarginX + 3 * cubeSize + 2 * cubeSizeGap - movesText.offsetWidth}px 
+    ${ cubeSizeMarginY + 3 * cubeSize + 3 * cubeSizeGap + cubeSize * 0.4 + movesTextMargin }px`
 }
 
 
@@ -560,6 +604,15 @@ function keyPressed(event) {
       hideTimer = false;
     } else {
       hideTimer = true;
+    }
+  }
+
+  // Moves
+  if (event.key == hideMovesKey) {
+    if (hideMoves) {
+      hideMoves = false;
+    } else {
+      hideMoves = true;
     }
   }
 
