@@ -115,8 +115,8 @@ const indicators = {};
 const indicatorSize = cubeSize * 0.4;
 const indicatorMargin = cubeSize * 1.05;
 
-const indicatorSolvedSize = cubeSize * 0.25; 
-const indicatorSolvedMargin = cubeSize * 0.6; 
+const indicatorSolvedSize = cubeSize * 0.22; 
+const indicatorSolvedMargin = cubeSize * 0.2; 
 
 // Colors
 const colors = {
@@ -520,7 +520,7 @@ function setIndicatorSolved() {
 
   indicators.s.el.style.translate = 
     `${ cubeSizeMarginX + 3 * cubeSize + 3 * cubeSizeGap + indicatorSolvedMargin }px 
-    ${ cubeSizeMarginY + 2 * cubeSize + 2 * cubeSizeGap + cubeSize - indicatorSolvedSize }px`
+    ${ cubeSizeMarginY + 3 * cubeSize + 3 * cubeSizeGap + cubeSize * 0.4 + cubeSize / 4 - indicatorSolvedSize / 2 + cubeSize * 0.085 }px` // cubeSize * 0.085 is for ofsetting for the font Jetbrains Mono
 }
 
 function keyPressed(event) {
