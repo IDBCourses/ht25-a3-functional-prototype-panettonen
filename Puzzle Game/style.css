@@ -5,6 +5,15 @@
 
 .uis {
     position: absolute;
+    font-family: 'JetBrains Mono';
+}
+
+#time {
+    font-weight: 600;
+}
+
+#moves {
+    font-weight: 400;
 }
 
 /* Prevent padding and border from affecting element width. */

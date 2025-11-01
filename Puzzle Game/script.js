@@ -413,8 +413,6 @@ function drawTimeText() {
   
   timeText.style.fontSize = `${ cubeSize / 2 }px`;
   timeText.textContent = timeShow;
-  timeText.style.fontFamily = "JetBrains Mono";
-  timeText.style.fontWeight = "600";
 
   timeText.style.translate = 
     `${ cubeSizeMarginX + 3 * cubeSize + 2 * cubeSizeGap - timeText.offsetWidth}px 
@@ -434,8 +432,6 @@ function drawMovesText() {
   
   movesText.style.fontSize = `${ cubeSize / 2 }px`;
   movesText.textContent = movesTotal;
-  movesText.style.fontFamily = "JetBrains Mono";
-  movesText.style.fontWeight = "400";
 
   if (hideTimer) {
     movesTextMargin = 0;
