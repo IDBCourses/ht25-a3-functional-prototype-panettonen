@@ -404,7 +404,7 @@ function checkIfSolved() {
 
 function drawTimeText() {
   if (hideTimer) {
-    timeText.style.color = "unset";
+    timeText.style.color = "transparent";
     timeText.style.userSelect = "none";
   } else {
     timeText.style.color = currentColors.text;
@@ -412,7 +412,6 @@ function drawTimeText() {
   }
   
   timeText.style.fontSize = `${ cubeSize / 2 }px`;
-  timeText.style.backgroundColor = "unset";
   timeText.textContent = timeShow;
   timeText.style.fontFamily = "JetBrains Mono";
   timeText.style.fontWeight = "600";
@@ -426,7 +425,7 @@ function drawMovesText() {
   let movesTextMargin;
 
   if (hideMoves) {
-    movesText.style.color = "unset";
+    movesText.style.color = "transparent";
     movesText.style.userSelect = "none";
   } else {
     movesText.style.color = currentColors.text;
@@ -434,7 +433,6 @@ function drawMovesText() {
   }
   
   movesText.style.fontSize = `${ cubeSize / 2 }px`;
-  movesText.style.backgroundColor = "unset";
   movesText.textContent = movesTotal;
   movesText.style.fontFamily = "JetBrains Mono";
   movesText.style.fontWeight = "400";
