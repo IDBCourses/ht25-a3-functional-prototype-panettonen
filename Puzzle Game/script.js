@@ -139,9 +139,19 @@ const colors = {
     c2: "#B2B73E",
     c3: "#B4CDC2",
     solved: "#B2B73E",
-    text: "#D7D7D7"
+    text: "#FFE5D7"
+  }, 
+  scheme4: {
+    c1: "#F37F94",
+    c2: "#FDD4BD",
+    c3: "#AFD472",
+    solved: "#AFD472",
+    text: "#FFE7D9"
   }
 };
+
+const cSchemesAmount = Object.keys(colors).length;
+let cSchemesIndex = 1;
 
 let currentColors = colors.scheme1;
 let prevColors;
@@ -237,14 +247,15 @@ function checkTimeDiff(row1, row2) {
 function changeColorScheme() {
   prevColors = currentColors;
 
-  if (currentColors == colors.scheme1) {
-    currentColors = colors.scheme2;
-  } else if (currentColors == colors.scheme2) {
-    currentColors = colors.scheme3;
-  } else if (currentColors == colors.scheme3) {
-    currentColors = colors.scheme1;
+  if (cSchemesIndex < cSchemesAmount) {
+    cSchemesIndex++;
+  } else if (cSchemesIndex == cSchemesAmount) {
+    cSchemesIndex = 1;
   }
 
+  currentColors = colors[`scheme${ cSchemesIndex }`];
+
+  // Cubes
   for (let x = 0; x < 3; x++) {
     for (let y = 0; y < 3; y++) {
       if (cubes[x][y].color == prevColors.c1) {
@@ -257,6 +268,7 @@ function changeColorScheme() {
     }
   }
 
+  // Indicators
   indicators.r1.el.style.backgroundColor = currentColors.c1;
   indicators.r2.el.style.backgroundColor = currentColors.c2;
   indicators.r3.el.style.backgroundColor = currentColors.c3;
