@@ -205,10 +205,6 @@ function checkRowSwipe() {
   if (row1Row2 && row2Row3 || row2Row3 && row3Row4) {
     haveSwiped = true;
 
-    // console.log(`${ keyRows.r2.time - keyRows.r1.time }`);
-    // console.log(`${ keyRows.r3.time - keyRows.r2.time }`);
-    // console.log(`${ keyRows.r4.time - keyRows.r3.time }`);
-
     // Remove the saved time for when the keys was pressed
     for (let i = 1; i <= keyRowsAmount; i++) {
       keyRows[`r${ i }`].time = null;
@@ -224,8 +220,6 @@ function getKeyRowsTime() {
       if (!keyRows[row].havePressed) {
         keyRows[row].time = performance.now();
         keyRows[row].havePressed = true; // keyUp event make it false again
-        
-        // console.log(`Row ${ i } - ${ keyRows[row].time }`);
       }
     }
   }
@@ -531,7 +525,7 @@ function setIndicatorSolved() {
 
   indicators.s.el.style.translate = 
     `${ xPos }px 
-    ${ cubeSizeMarginY + 3 * cubeSize + 3 * cubeSizeGap + cubeSize * 0.4 + cubeSize / 4 - indicatorSolvedSize / 2 + cubeSize * 0.085 }px` // cubeSize * 0.085 is for ofsetting for the font Jetbrains Mono
+    ${ cubeSizeMarginY + 3 * cubeSize + 3 * cubeSizeGap + cubeSize * 0.4 + cubeSize / 4 - indicatorSolvedSize / 2 + cubeSize * 0.085 }px` // cubeSize * 0.085 is for ofsetting the circle for the font Jetbrains Mono
 }
 
 function keyPressed(event) {

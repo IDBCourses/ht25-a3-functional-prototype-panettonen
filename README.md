@@ -5,11 +5,16 @@
 
 This game is inspired by the Rubik's cube.
 
-### Controls:
+### Keyboard shortcuts
 
 `T` - Hide/show timer
+`V` - Hide/show total moves
 
-#### Keys used for controlling the cube:
+### Controls
+
+#### Controlling the cube
+
+Keys used:
 
 ```
 Q W E
@@ -27,4 +32,19 @@ Press and hold one of these key to select what row or column you want to move:
 
 Then by selecting a key near the key you are holding down, the cubes move in the direction of the newly pressed key. 
 
-For example, if you press and hold `X` and then press `C`, you move the bottom row to the right on step.
+For example, if you press and hold `X` and then press `C`, you move the bottom row to the right one step.
+
+#### Change the color scheme
+
+Keys used:
+
+```
+6 7 8 9
+Y U I O
+H J K L
+N M , .
+```
+
+By swiping down on these keys, it will change between the color schemes. 
+
+For it to work, at least 3 keys need to have been pressed. 
