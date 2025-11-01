@@ -5,14 +5,14 @@
 
 This game is inspired by the Rubik's cube.
 
-### Keyboard shortcuts
+## Keyboard shortcuts
 
-`T` - Hide/show timer
+`T` - Hide/show timer  
 `V` - Hide/show total moves
 
-### Controls
+## Controls
 
-#### Controlling the cube
+### Controlling the cube
 
 Keys used:
 
@@ -34,7 +34,7 @@ Then by selecting a key near the key you are holding down, the cubes move in the
 
 For example, if you press and hold `X` and then press `C`, you move the bottom row to the right one step.
 
-#### Change the color scheme
+### Change the color scheme
 
 Keys used:
 
