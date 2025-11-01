@@ -405,8 +405,10 @@ function checkIfSolved() {
 function drawTimeText() {
   if (hideTimer) {
     timeText.style.color = "unset";
+    timeText.style.userSelect = "none";
   } else {
     timeText.style.color = currentColors.text;
+    timeText.style.userSelect = "all";
   }
   
   timeText.style.fontSize = `${ cubeSize / 2 }px`;
@@ -425,8 +427,10 @@ function drawMovesText() {
 
   if (hideMoves) {
     movesText.style.color = "unset";
+    movesText.style.userSelect = "none";
   } else {
     movesText.style.color = currentColors.text;
+    movesText.style.userSelect = "all";
   }
   
   movesText.style.fontSize = `${ cubeSize / 2 }px`;
