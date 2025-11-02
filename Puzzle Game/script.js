@@ -133,6 +133,8 @@ const cubeSizeGap = 8;
 const cubeSizeMarginX = 170;
 const cubeSizeMarginY = 100;
 
+const wholeCubeWidth = 3 * cubeSize + 2 * cubeSizeGap;
+
 
 // Indicators
 const indicators = {};
@@ -140,7 +142,7 @@ const indicatorSize = cubeSize * 0.4;
 const indicatorMargin = cubeSize * 1.05;
 
 const indicatorSolvedSize = cubeSize * 0.22; 
-const indicatorSolvedMargin = cubeSize * 0.2; 
+const indicatorSolvedMargin = cubeSize * 0.3; 
 
 
 // Text
@@ -149,6 +151,8 @@ const textSize = cubeSize / 2;
 
 // Timer
 const timeText = document.getElementById("time");
+const timeTextXPos = cubeSizeMarginX + wholeCubeWidth;
+const timeTextYPos = cubeSizeMarginY + wholeCubeWidth + cubeSize * 0.5;
 
 let timeShow = "0.00";
 let timeSwitch;
@@ -162,6 +166,7 @@ let hideTimerKey = "t";
 
 // Moves
 const movesText = document.getElementById("moves");
+const movesTextOffset = cubeSize / 2 + cubeSize * 0.15;
 
 let movesTotal = 0;
 let hideMoves = false;
@@ -182,7 +187,7 @@ function loop() {
 
   if (resetCube) {
     resetColors();
-    solvedByUser = false;
+    solvedByUser = true;
     timeSwitch = false;
     timeShow = "0.00";
     movesTotal = 0;
@@ -453,12 +458,12 @@ function drawTimeText() {
   timeText.textContent = timeShow;
 
   timeText.style.translate = 
-    `${ cubeSizeMarginX + 3 * cubeSize + 2 * cubeSizeGap - timeText.offsetWidth }px 
-    ${ cubeSizeMarginY + 3 * cubeSize + 3 * cubeSizeGap + cubeSize * 0.4 }px`
+    `${ timeTextXPos - timeText.offsetWidth }px 
+    ${ timeTextYPos }px`
 }
 
 function drawMovesText() {
-  let movesTextOffset;
+  let offset;
 
   if (hideMoves) {
     movesText.style.color = "transparent";
@@ -471,14 +476,14 @@ function drawMovesText() {
 
   // If timer is hidden, moves text takes the position of the timer
   if (hideTimer) {
-    movesTextOffset = 0;
+    offset = 0;
   } else {
-    movesTextOffset = cubeSize / 2 + cubeSize * 0.15;
+    offset = movesTextOffset;
   }
 
   movesText.style.translate = 
-    `${ cubeSizeMarginX + 3 * cubeSize + 2 * cubeSizeGap - movesText.offsetWidth }px 
-    ${ cubeSizeMarginY + 3 * cubeSize + 3 * cubeSizeGap + cubeSize * 0.4 + movesTextOffset }px`
+    `${ timeTextXPos - movesText.offsetWidth }px 
+    ${ timeTextYPos + offset }px`
 }
 
 
@@ -551,9 +556,9 @@ function drawIndicatorSolved() {
   // Change position if the text is hidden
   if (hideTimer && hideMoves) {
     indSize *= 1.2;
-    xPos = cubeSizeMarginX + 3 * cubeSize + 2 * cubeSizeGap - indSize;
+    xPos = cubeSizeMarginX + wholeCubeWidth - indSize;
   } else {
-    xPos = cubeSizeMarginX + 3 * cubeSize + 3 * cubeSizeGap + indicatorSolvedMargin;
+    xPos = cubeSizeMarginX + wholeCubeWidth + indicatorSolvedMargin;
   }
 
   indicators.s.el.style.width = `${ indSize }px`;
@@ -562,7 +567,7 @@ function drawIndicatorSolved() {
 
   indicators.s.el.style.translate = 
     `${ xPos }px 
-    ${ cubeSizeMarginY + 3 * cubeSize + 3 * cubeSizeGap + cubeSize * 0.4 + textSize / 2 - indicatorSolvedSize / 2 + (textSize * 2) * 0.079 }px`;
+    ${ timeTextYPos + textSize / 2 - indicatorSolvedSize / 2 + (textSize * 2) * 0.079 }px`;
     // (textSize * 2) * 0.079 is for ofsetting the circle so it aligns to the center of the text
 }
 
