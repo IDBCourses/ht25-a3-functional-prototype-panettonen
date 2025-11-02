@@ -6,116 +6,11 @@
  * 
  */
 
+// Only show the solved indicator when it has been randomized
 let solvedByUser = false;
-let puzzleSolved = false; // When true: Moves don't count
+// Stop counting moves when it gets solved
+let puzzleSolved = false;
 
-// Timer
-const timeText = document.getElementById("time");
-
-let timeShow = "0.00";
-let timeSwitch;
-
-let timeStart;
-let timeElapsed;
-
-let hideTimer = false;
-let hideTimerKey = "t";
-
-// Moves
-const movesText = document.getElementById("moves");
-
-let movesTotal = 0;
-let hideMoves = false;
-let hideMovesKey = "v";
-
-// Keys
-let upKey = false;
-let downKey = false;
-let leftKey = false;
-let rightKey = false;
-let centerKey = false;
-
-const moves = {
-  upLeft: false,
-  upRight: false,
-  downLeft: false,
-  downRight: false,
-
-  leftUp: false,
-  leftDown: false,
-  rightUp: false,
-  rightDown: false,
-
-  centerUp: false,
-  centerDown: false,
-  centerLeft: false,
-  centerRight: false
-};
-
-// keys[x][y] - Change X & Y so X is first
-let keys = [
-  ["KeyQ", "KeyA", "KeyZ"],
-  ["KeyW", "KeyS", "KeyX"],
-  ["KeyE", "KeyD", "KeyC"]
-];
-
-// keysColor[y][x] - List not reversed
-let keyRowsMap = [
-  ["Digit6", "Digit7", "Digit8", "Digit9"],
-  ["KeyY", "KeyU", "KeyI", "KeyO"],
-  ["KeyH", "KeyJ", "KeyK", "KeyL"],
-  ["KeyN", "KeyM", "Comma", "Period"]
-]
-
-const keyRows = {
-  r1: {
-    press: false,
-    havePressed: false,
-    time: null
-  },
-  r2: {
-    press: false,
-    havePressed: false,
-    time: null
-  },
-  r3: {
-    press: false,
-    havePressed: false,
-    time: null
-  },
-  r4: {
-    press: false,
-    havePressed: false,
-    time: null
-  }
-}
-
-const keyRowsAmount = Object.keys(keyRows).length;
-const swipeRowsTimeLimit = 200;
-let haveSwiped = false;
-
-const randomizeKey = "Space";
-let randomize = false;
-
-const resetKey = "Enter";
-let resetCube = false;
-
-// Cubes
-let cubeObjects = {};
-let cubes = [];
-
-const cubeSize = 70;
-const cubeSizeGap = 8;
-const cubeSizeMarginX = 170;
-const cubeSizeMarginY = 100;
-
-// Indicators
-const indicators = {};
-const indicatorSize = cubeSize * 0.4;
-const indicatorMargin = cubeSize * 1.05;
-
-const indicatorSolvedSize = cubeSize * 0.22; 
-const indicatorSolvedMargin = cubeSize * 0.2; 
 
 // Colors
 const colors = {
@@ -154,6 +49,123 @@ let cSchemesIndex = 1;
 
 let currentColors = colors.scheme1;
 let prevColors;
+
+
+// Keys
+let upKey = false;
+let downKey = false;
+let leftKey = false;
+let rightKey = false;
+let centerKey = false;
+
+const moves = {
+  upLeft: false,
+  upRight: false,
+  downLeft: false,
+  downRight: false,
+
+  leftUp: false,
+  leftDown: false,
+  rightUp: false,
+  rightDown: false,
+
+  centerUp: false,
+  centerDown: false,
+  centerLeft: false,
+  centerRight: false
+};
+
+// keys[x][y] - Changed X & Y so X is first
+const keys = [
+  ["KeyQ", "KeyA", "KeyZ"],
+  ["KeyW", "KeyS", "KeyX"],
+  ["KeyE", "KeyD", "KeyC"]
+];
+
+// keysColor[y][x]
+const keyRowsMap = [
+  ["Digit6", "Digit7", "Digit8", "Digit9"],
+  ["KeyY", "KeyU", "KeyI", "KeyO"],
+  ["KeyH", "KeyJ", "KeyK", "KeyL"],
+  ["KeyN", "KeyM", "Comma", "Period"]
+];
+
+const keyRows = {
+  r1: {
+    press: false,
+    havePressed: false,
+    time: null
+  },
+  r2: {
+    press: false,
+    havePressed: false,
+    time: null
+  },
+  r3: {
+    press: false,
+    havePressed: false,
+    time: null
+  },
+  r4: {
+    press: false,
+    havePressed: false,
+    time: null
+  }
+};
+
+const keyRowsAmount = Object.keys(keyRows).length;
+const swipeRowsTimeLimit = 200;
+let haveSwiped = false;
+
+const randomizeKey = "Space";
+let randomize = false;
+
+const resetKey = "Enter";
+let resetCube = false;
+
+
+// Cubes
+let cubeObjects = {};
+let cubes = [];
+
+const cubeSize = 70;
+const cubeSizeGap = 8;
+const cubeSizeMarginX = 170;
+const cubeSizeMarginY = 100;
+
+
+// Indicators
+const indicators = {};
+const indicatorSize = cubeSize * 0.4;
+const indicatorMargin = cubeSize * 1.05;
+
+const indicatorSolvedSize = cubeSize * 0.22; 
+const indicatorSolvedMargin = cubeSize * 0.2; 
+
+
+// Text
+const textSize = cubeSize / 2;
+
+
+// Timer
+const timeText = document.getElementById("time");
+
+let timeShow = "0.00";
+let timeSwitch;
+
+let timeStart;
+let timeElapsed;
+
+let hideTimer = false;
+let hideTimerKey = "t";
+
+
+// Moves
+const movesText = document.getElementById("moves");
+
+let movesTotal = 0;
+let hideMoves = false;
+let hideMovesKey = "v";
 
 
 // Code that runs over and over again
@@ -198,12 +210,12 @@ function loop() {
   checkIfSolved();
   drawTimeText();
   drawMovesText();
-  setIndicatorSolved();
+  drawIndicatorSolved();
 
   window.requestAnimationFrame(loop);
 }
 
-
+/** Change haveSwiped to true if the time between the row presses is low enough. The variable swipeRowsTimeLimit changes the time limit between two row presses */
 function checkRowSwipe() {
   getKeyRowsTime();
 
@@ -248,7 +260,7 @@ function changeColorScheme() {
 
   if (cSchemesIndex < cSchemesAmount) {
     cSchemesIndex++;
-  } else if (cSchemesIndex == cSchemesAmount) {
+  } else if (cSchemesIndex === cSchemesAmount) {
     cSchemesIndex = 1;
   }
 
@@ -257,11 +269,11 @@ function changeColorScheme() {
   // Cubes
   for (let x = 0; x < 3; x++) {
     for (let y = 0; y < 3; y++) {
-      if (cubes[x][y].color == prevColors.c1) {
+      if (cubes[x][y].color === prevColors.c1) {
         cubes[x][y].color = currentColors.c1;
-      } else if (cubes[x][y].color == prevColors.c2) {
+      } else if (cubes[x][y].color === prevColors.c2) {
         cubes[x][y].color = currentColors.c2;
-      } else if (cubes[x][y].color == prevColors.c3) {
+      } else if (cubes[x][y].color === prevColors.c3) {
         cubes[x][y].color = currentColors.c3;
       }
     }
@@ -273,6 +285,8 @@ function changeColorScheme() {
   indicators.r3.el.style.backgroundColor = currentColors.c3;
 }
 
+/** Take in the keyboard input to move the colors of the cube objects. 
+ * One keypress move the colors of one row or column one step */
 function moveColors() {
   // Up
   if (moves.upLeft) {
@@ -326,6 +340,15 @@ function moveColors() {
   }
 }
 
+/**
+ * Take in three cube positions and switch the colors of them by pushing each one step to the right, so 1, 2, 3 will switch to 3, 1, 2
+ * @param {number} x1 - Position 1
+ * @param {number} y1 - Position 1
+ * @param {number} x2 - Position 2
+ * @param {number} y2 - Position 2
+ * @param {number} x3 - Position 3
+ * @param {number} y3 - Position 3
+ */
 function move(x1, y1, x2, y2, x3, y3) {
   let temp1 = cubes[x1][y1].color;
   let temp2 = cubes[x2][y2].color;
@@ -340,6 +363,7 @@ function move(x1, y1, x2, y2, x3, y3) {
   }
 }
 
+/** Apply the color of the cube objects to the HTML elements */
 function drawCubes() {
   for (let x = 0; x < 3; x++) {
     for (let y = 0; y < 3; y++) {
@@ -348,15 +372,19 @@ function drawCubes() {
   }
 }
 
+/**
+ * Randomize two positions and switch them
+ * @param {number} turns Amount of times it switches the positions
+ */
 function randomizeColors(turns) {
   for (let i = 0; i < turns; i++) {
-    let pos1 = getRandomPos();
-    let pos2 = getRandomPos();
+    let pos1 = getRandomPosition();
+    let pos2 = getRandomPosition();
     let samePosition = true; // To get into the loop
 
     while (samePosition) {
-      if (pos1.x == pos2.x && pos1.y == pos2.y) {
-        pos2 = getRandomPos();
+      if (pos1.x === pos2.x && pos1.y === pos2.y) {
+        pos2 = getRandomPosition();
       } else {
         samePosition = false;
       }
@@ -366,7 +394,7 @@ function randomizeColors(turns) {
   }
 }
 
-function getRandomPos() {
+function getRandomPosition() {
   let xValue = Math.floor(Math.random() * 3);
   let yValue = Math.floor(Math.random() * 3);
 
@@ -384,26 +412,27 @@ function switchTwoColors(position1, position2) {
   cubes[p2.x][p2.y].color = tempColor1;
 }
 
+/** When the puzzle get solved, show the indicator for it and stop the timer and move counting */
 function checkIfSolved() {
   let firstRowSolved = [];
   let secondRowSolved = [];
   let thirdRowSolved = [];
 
   for (let i = 0; i < 3; i++) {
-    if (cubes[i][0].color == currentColors.c1) {
+    if (cubes[i][0].color === currentColors.c1) {
       firstRowSolved.push(1);
     }
-    if (cubes[i][1].color == currentColors.c2) {
+    if (cubes[i][1].color === currentColors.c2) {
       secondRowSolved.push(1);
     }
-    if (cubes[i][2].color == currentColors.c3) {
+    if (cubes[i][2].color === currentColors.c3) {
       thirdRowSolved.push(1);
     }
   }
   
-  if (firstRowSolved.length == 3 && 
-      secondRowSolved.length == 3 && 
-      thirdRowSolved.length == 3 && 
+  if (firstRowSolved.length === 3 && 
+      secondRowSolved.length === 3 && 
+      thirdRowSolved.length === 3 && 
       solvedByUser) {
     indicators.s.el.style.backgroundColor = currentColors.solved;
     timeSwitch = false;
@@ -420,16 +449,16 @@ function drawTimeText() {
     timeText.style.color = currentColors.text;
   }
   
-  timeText.style.fontSize = `${ cubeSize / 2 }px`;
+  timeText.style.fontSize = `${ textSize }px`;
   timeText.textContent = timeShow;
 
   timeText.style.translate = 
-    `${ cubeSizeMarginX + 3 * cubeSize + 2 * cubeSizeGap - timeText.offsetWidth}px 
+    `${ cubeSizeMarginX + 3 * cubeSize + 2 * cubeSizeGap - timeText.offsetWidth }px 
     ${ cubeSizeMarginY + 3 * cubeSize + 3 * cubeSizeGap + cubeSize * 0.4 }px`
 }
 
 function drawMovesText() {
-  let movesTextMargin;
+  let movesTextOffset;
 
   if (hideMoves) {
     movesText.style.color = "transparent";
@@ -437,18 +466,19 @@ function drawMovesText() {
     movesText.style.color = currentColors.text;
   }
   
-  movesText.style.fontSize = `${ cubeSize / 2 }px`;
+  movesText.style.fontSize = `${ textSize }px`;
   movesText.textContent = movesTotal;
 
+  // If timer is hidden, moves text takes the position of the timer
   if (hideTimer) {
-    movesTextMargin = 0;
+    movesTextOffset = 0;
   } else {
-    movesTextMargin = cubeSize / 2 + cubeSize * 0.15;
+    movesTextOffset = cubeSize / 2 + cubeSize * 0.15;
   }
 
   movesText.style.translate = 
-    `${ cubeSizeMarginX + 3 * cubeSize + 2 * cubeSizeGap - movesText.offsetWidth}px 
-    ${ cubeSizeMarginY + 3 * cubeSize + 3 * cubeSizeGap + cubeSize * 0.4 + movesTextMargin }px`
+    `${ cubeSizeMarginX + 3 * cubeSize + 2 * cubeSizeGap - movesText.offsetWidth }px 
+    ${ cubeSizeMarginY + 3 * cubeSize + 3 * cubeSizeGap + cubeSize * 0.4 + movesTextOffset }px`
 }
 
 
@@ -461,7 +491,7 @@ function createCubeObjects() {
   }
 }
 
-function setCubesObjects() {
+function drawCubeObjects() {
   for (let x = 0; x < 3; x++) {
     for (let y = 0; y < 3; y++) {
       cubes[x][y].el.style.width = `${ cubeSize }px`;
@@ -504,7 +534,7 @@ function createIndicators() {
   }
 }
 
-function setIndicator(ind, row) {
+function drawIndicator(ind, row) {
   ind.el.style.width = `${ indicatorSize }px`;
   ind.el.style.height = `${ indicatorSize }px`;
   
@@ -513,103 +543,104 @@ function setIndicator(ind, row) {
     ${ cubeSizeMarginY + cubeSize / 2 - indicatorSize / 2 + row * cubeSize + row * cubeSizeGap }px`
 }
 
-function setIndicatorSolved() {
+function drawIndicatorSolved() {
   let xPos;
-  let indSize = indicatorSolvedSize;
 
+  // Change the position if the text is hidden
   if (hideTimer && hideMoves) {
-    indSize *= 1.2;
-    xPos = cubeSizeMarginX + 3 * cubeSize + 2 * cubeSizeGap - indSize;
+    indicatorSolvedSize *= 1.2;
+    xPos = cubeSizeMarginX + 3 * cubeSize + 2 * cubeSizeGap - indicatorSolvedSize;
   } else {
     xPos = cubeSizeMarginX + 3 * cubeSize + 3 * cubeSizeGap + indicatorSolvedMargin;
   }
 
-  indicators.s.el.style.width = `${ indSize }px`;
-  indicators.s.el.style.height = `${ indSize }px`;
+  indicators.s.el.style.width = `${ indicatorSolvedSize }px`;
+  indicators.s.el.style.height = `${ indicatorSolvedSize }px`;
   indicators.s.el.style.borderRadius = "50%";
 
   indicators.s.el.style.translate = 
     `${ xPos }px 
-    ${ cubeSizeMarginY + 3 * cubeSize + 3 * cubeSizeGap + cubeSize * 0.4 + cubeSize / 4 - indicatorSolvedSize / 2 + cubeSize * 0.085 }px` // cubeSize * 0.085 is for ofsetting the circle for the font Jetbrains Mono
+    ${ cubeSizeMarginY + 3 * cubeSize + 3 * cubeSizeGap + cubeSize * 0.4 + textSize / 2 - indicatorSolvedSize / 2 + (textSize * 2) * 0.079 }px`;
+    // (textSize * 2) * 0.079 is for ofsetting the circle so it aligns to the center of the text
 }
 
 function keyPressed(event) {
   // Up
-  if (event.code == keys[1][0]) {
+  if (event.code === keys[1][0]) {
     upKey = true;
   }
-  if (upKey == true) {
-    if (event.code == keys[0][0]) { // Up - Left
+  if (upKey === true) {
+    if (event.code === keys[0][0]) { // Up - Left
       moves.upLeft = true;
-    } else if (event.code == keys[2][0]) { // Up - Right
+    } else if (event.code === keys[2][0]) { // Up - Right
       moves.upRight = true;
     }
   }
 
   // Down
-  if (event.code == keys[1][2]) {
+  if (event.code === keys[1][2]) {
     downKey = true;
   }
-  if (downKey == true) {
-    if (event.code == keys[0][2]) { // Down - Left
+  if (downKey === true) {
+    if (event.code === keys[0][2]) { // Down - Left
       moves.downLeft = true;
-    } else if (event.code == keys[2][2]) { // Down - Right
+    } else if (event.code === keys[2][2]) { // Down - Right
       moves.downRight = true;
     }
   }
 
   // Left
-  if (event.code == keys[0][1]) {
+  if (event.code === keys[0][1]) {
     leftKey = true;
   }
-  if (leftKey == true) {
-    if (event.code == keys[0][0]) { // Left - Up
+  if (leftKey === true) {
+    if (event.code === keys[0][0]) { // Left - Up
       moves.leftUp = true;
-    } else if (event.code == keys[0][2]) { // Left - Down
+    } else if (event.code === keys[0][2]) { // Left - Down
       moves.leftDown = true;
     }
   }
 
   // Right
-  if (event.code == keys[2][1]) {
+  if (event.code === keys[2][1]) {
     rightKey = true;
   }
-  if (rightKey == true) {
-    if (event.code == keys[2][0]) { // Right - Up
+  if (rightKey === true) {
+    if (event.code === keys[2][0]) { // Right - Up
       moves.rightUp = true;
-    } else if (event.code == keys[2][2]) { // Right - Down
+    } else if (event.code === keys[2][2]) { // Right - Down
       moves.rightDown = true;
     }
   }
 
   // Center
-  if (event.code == keys[1][1]) {
+  if (event.code === keys[1][1]) {
     centerKey = true;
   }
-  if (centerKey == true) {
-    if (event.code == keys[1][0]) { // Center - Up
+  if (centerKey === true) {
+    if (event.code === keys[1][0]) { // Center - Up
       moves.centerUp = true;
-    } else if (event.code == keys[1][2]) { // Center - Down
+    } else if (event.code === keys[1][2]) { // Center - Down
       moves.centerDown = true;
-    } else if (event.code == keys[0][1]) { // Center - Left
+    } else if (event.code === keys[0][1]) { // Center - Left
       moves.centerLeft = true;
-    } else if (event.code == keys[2][1]) { // Center - Right
+    } else if (event.code === keys[2][1]) { // Center - Right
       moves.centerRight = true;
     }
   }
 
   // Reset
-  if (event.code == resetKey) {
+  if (event.code === resetKey) {
     resetCube = true;
   }
 
   // Random
-  if (event.code == randomizeKey) {
+  if (event.code === randomizeKey) {
     randomize = true;
   }
 
   // Timer
-  if (event.key == hideTimerKey) {
+  if (event.key === hideTimerKey) {
     if (hideTimer) {
       hideTimer = false;
     } else {
@@ -618,7 +649,7 @@ function keyPressed(event) {
   }
 
   // Moves
-  if (event.key == hideMovesKey) {
+  if (event.key === hideMovesKey) {
     if (hideMoves) {
       hideMoves = false;
     } else {
@@ -638,23 +669,23 @@ function keyPressed(event) {
 
 function keyReleased(event) {
   // Up
-  if (event.code == keys[1][0]) {
+  if (event.code === keys[1][0]) {
     upKey = false;
   }
   // Down
-  if (event.code == keys[1][2]) {
+  if (event.code === keys[1][2]) {
     downKey = false;
   }
   // Left
-  if (event.code == keys[0][1]) {
+  if (event.code === keys[0][1]) {
     leftKey = false;
   }
   // Right
-  if (event.code == keys[2][1]) {
+  if (event.code === keys[2][1]) {
     rightKey = false;
   }
   // Center
-  if (event.code == keys[1][1]) {
+  if (event.code === keys[1][1]) {
     centerKey = false;
   }
   // Rows
@@ -678,13 +709,13 @@ function setup() {
     [cubeObjects.c3, cubeObjects.c6, cubeObjects.c9]
   ];
 
-  setCubesObjects();
+  drawCubeObjects();
 
   createIndicators();
-  setIndicator(indicators.r1, 0);
-  setIndicator(indicators.r2, 1);
-  setIndicator(indicators.r3, 2);
-  setIndicatorSolved();
+  drawIndicator(indicators.r1, 0);
+  drawIndicator(indicators.r2, 1);
+  drawIndicator(indicators.r3, 2);
+  drawIndicatorSolved();
 
   resetColors();
 
