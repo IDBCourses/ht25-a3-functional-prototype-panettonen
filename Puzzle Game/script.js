@@ -75,14 +75,14 @@ const moves = {
   centerRight: false
 };
 
-// keys[x][y] - Changed X & Y so X is first
+/** keys[x][y] */
 const keys = [
   ["KeyQ", "KeyA", "KeyZ"],
   ["KeyW", "KeyS", "KeyX"],
   ["KeyE", "KeyD", "KeyC"]
 ];
 
-// keysColor[y][x]
+/** keyRowsMap[y][x] */
 const keyRowsMap = [
   ["Digit6", "Digit7", "Digit8", "Digit9"],
   ["KeyY", "KeyU", "KeyI", "KeyO"],
@@ -126,6 +126,7 @@ let resetCube = false;
 
 // Cubes
 let cubeObjects = {};
+/** cubes[x][y] */
 let cubes = [];
 
 const cubeSize = 70;
@@ -154,8 +155,8 @@ const timeText = document.getElementById("time");
 const timeTextXPos = cubeSizeMarginX + wholeCubeWidth;
 const timeTextYPos = cubeSizeMarginY + wholeCubeWidth + cubeSize * 0.5;
 
-let timeShow = "0.00";
-let timeSwitch;
+let time = "0.00";
+let timerRunning;
 
 let timeStart;
 let timeElapsed;
@@ -188,8 +189,8 @@ function loop() {
   if (resetCube) {
     resetColors();
     solvedByUser = false;
-    timeSwitch = false;
-    timeShow = "0.00";
+    timerRunning = false;
+    time = "0.00";
     movesTotal = 0;
     puzzleSolved = false;
 
@@ -200,16 +201,16 @@ function loop() {
     randomizeColors(50);
     solvedByUser = true;
     timeStart = performance.now();
-    timeSwitch = true;
+    timerRunning = true;
     movesTotal = 0;
     puzzleSolved = false;
 
     randomize = false;
   }
 
-  if (timeSwitch) {
+  if (timerRunning) {
     timeElapsed = performance.now() - timeStart;
-    timeShow = (timeElapsed / 1000).toFixed(2);
+    time = (timeElapsed / 1000).toFixed(2);
   }
 
   checkIfSolved();
@@ -440,7 +441,7 @@ function checkIfSolved() {
       thirdRowSolved.length === 3 && 
       solvedByUser) {
     indicators.s.el.style.backgroundColor = currentColors.solved;
-    timeSwitch = false;
+    timerRunning = false;
     puzzleSolved = true;
   } else {
     indicators.s.el.style.backgroundColor = "unset";
@@ -455,7 +456,7 @@ function drawTimeText() {
   }
   
   timeText.style.fontSize = `${ textSize }px`;
-  timeText.textContent = timeShow;
+  timeText.textContent = time;
 
   timeText.style.translate = 
     `${ timeTextXPos - timeText.offsetWidth }px 
