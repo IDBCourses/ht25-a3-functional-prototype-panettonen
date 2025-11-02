@@ -10,10 +10,9 @@ let solvedByUser = false;
 let puzzleSolved = false; // When true: Moves don't count
 
 // Timer
-const zero = 0;
 const timeText = document.getElementById("time");
 
-let timeShow = zero.toFixed(2);
+let timeShow = "0.00";
 let timeSwitch;
 
 let timeStart;
@@ -53,7 +52,7 @@ const moves = {
   centerRight: false
 };
 
-// keys[x][y] - Reversed the list so the first number is x
+// keys[x][y] - Change X & Y so X is first
 let keys = [
   ["KeyQ", "KeyA", "KeyZ"],
   ["KeyW", "KeyS", "KeyX"],
@@ -173,7 +172,7 @@ function loop() {
     resetColors();
     solvedByUser = false;
     timeSwitch = false;
-    timeShow = zero.toFixed(2);
+    timeShow = "0.00";
     movesTotal = 0;
     puzzleSolved = false;
 
@@ -417,10 +416,8 @@ function checkIfSolved() {
 function drawTimeText() {
   if (hideTimer) {
     timeText.style.color = "transparent";
-    timeText.style.userSelect = "none";
   } else {
     timeText.style.color = currentColors.text;
-    timeText.style.userSelect = "all";
   }
   
   timeText.style.fontSize = `${ cubeSize / 2 }px`;
@@ -436,10 +433,8 @@ function drawMovesText() {
 
   if (hideMoves) {
     movesText.style.color = "transparent";
-    movesText.style.userSelect = "none";
   } else {
     movesText.style.color = currentColors.text;
-    movesText.style.userSelect = "all";
   }
   
   movesText.style.fontSize = `${ cubeSize / 2 }px`;

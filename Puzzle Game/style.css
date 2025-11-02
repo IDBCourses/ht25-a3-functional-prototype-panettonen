@@ -39,7 +39,7 @@
 ::before,
 ::after {
     box-sizing: border-box;
-    user-select: all;
+    user-select: none;
 }
 
 /* Remove the margin in all browsers */
