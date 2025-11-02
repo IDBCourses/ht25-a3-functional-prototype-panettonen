@@ -545,17 +545,19 @@ function drawIndicator(ind, row) {
 
 function drawIndicatorSolved() {
   let xPos;
+  // For changing the size when it moves
+  let indSize = indicatorSolvedSize;
 
-  // Change the position if the text is hidden
+  // Change position if the text is hidden
   if (hideTimer && hideMoves) {
-    indicatorSolvedSize *= 1.2;
-    xPos = cubeSizeMarginX + 3 * cubeSize + 2 * cubeSizeGap - indicatorSolvedSize;
+    indSize *= 1.2;
+    xPos = cubeSizeMarginX + 3 * cubeSize + 2 * cubeSizeGap - indSize;
   } else {
     xPos = cubeSizeMarginX + 3 * cubeSize + 3 * cubeSizeGap + indicatorSolvedMargin;
   }
 
-  indicators.s.el.style.width = `${ indicatorSolvedSize }px`;
-  indicators.s.el.style.height = `${ indicatorSolvedSize }px`;
+  indicators.s.el.style.width = `${ indSize }px`;
+  indicators.s.el.style.height = `${ indSize }px`;
   indicators.s.el.style.borderRadius = "50%";
 
   indicators.s.el.style.translate = 
