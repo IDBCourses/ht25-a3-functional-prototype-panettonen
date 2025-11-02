@@ -187,7 +187,7 @@ function loop() {
 
   if (resetCube) {
     resetColors();
-    solvedByUser = true;
+    solvedByUser = false;
     timeSwitch = false;
     timeShow = "0.00";
     movesTotal = 0;
