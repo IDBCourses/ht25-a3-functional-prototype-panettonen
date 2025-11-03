@@ -234,14 +234,14 @@ function checkRowSwipe() {
 
     // Remove the saved time for when the keys were pressed
     for (let i = 1; i <= keyRowsAmount; i++) {
-      keyRows[`r${ i }`].time = null;
+      keyRows[`r${i}`].time = null;
     }
   }
 }
 
 function getKeyRowsTime() {
   for (let i = 1; i <= keyRowsAmount; i++) {
-    const row = `r${ i }`;
+    const row = `r${i}`;
 
     if (keyRows[row].press) {
       if (!keyRows[row].havePressed) {
@@ -270,7 +270,7 @@ function changeColorScheme() {
     cSchemesIndex = 1;
   }
 
-  currentColors = colors[`scheme${ cSchemesIndex }`];
+  currentColors = colors[`scheme${cSchemesIndex}`];
 
   // Cubes
   for (let x = 0; x < 3; x++) {
@@ -454,12 +454,12 @@ function drawTimeText() {
     timeText.style.color = currentColors.text;
   }
   
-  timeText.style.fontSize = `${ textSize }px`;
+  timeText.style.fontSize = `${textSize}px`;
   timeText.textContent = time;
 
   timeText.style.translate = 
-    `${ timeTextXPos - timeText.offsetWidth }px 
-    ${ timeTextYPos }px`
+    `${timeTextXPos - timeText.offsetWidth}px 
+    ${timeTextYPos}px`
 }
 
 function drawMovesText() {
@@ -471,7 +471,7 @@ function drawMovesText() {
     movesText.style.color = currentColors.text;
   }
   
-  movesText.style.fontSize = `${ textSize }px`;
+  movesText.style.fontSize = `${textSize}px`;
   movesText.textContent = movesTotal;
 
   // If the timer is hidden, `movesText` takes the position of it
@@ -482,15 +482,15 @@ function drawMovesText() {
   }
 
   movesText.style.translate = 
-    `${ timeTextXPos - movesText.offsetWidth }px 
-    ${ timeTextYPos + offset }px`
+    `${timeTextXPos - movesText.offsetWidth}px 
+    ${timeTextYPos + offset}px`
 }
 
 
 function createCubeObjects() {
   for (let i = 1; i <= 9; i++) {
-    cubeObjects[`c${ i }`] = {
-      el: document.getElementById(`cube${ i }`),
+    cubeObjects[`c${i}`] = {
+      el: document.getElementById(`cube${i}`),
       color: ""
     }
   }
@@ -499,12 +499,12 @@ function createCubeObjects() {
 function drawCubeObjects() {
   for (let x = 0; x < 3; x++) {
     for (let y = 0; y < 3; y++) {
-      cubes[x][y].el.style.width = `${ cubeSize }px`;
-      cubes[x][y].el.style.height = `${ cubeSize }px`;
+      cubes[x][y].el.style.width = `${cubeSize}px`;
+      cubes[x][y].el.style.height = `${cubeSize}px`;
 
       cubes[x][y].el.style.translate = 
-        `${ cubeSizeMarginX + x * cubeSize + x * cubeSizeGap }px 
-        ${ cubeSizeMarginY + y * cubeSize + y * cubeSizeGap }px`
+        `${cubeSizeMarginX + x * cubeSize + x * cubeSizeGap}px 
+        ${cubeSizeMarginY + y * cubeSize + y * cubeSizeGap}px`
     }
   }
 }
@@ -529,8 +529,8 @@ function resetColors() {
 
 function createIndicators() {
   for (let i = 1; i <= 3; i++) {
-    indicators[`r${ i }`] = {
-      el: document.getElementById(`ind${ i }`)
+    indicators[`r${i}`] = {
+      el: document.getElementById(`ind${i}`)
     }
   }
 
@@ -540,12 +540,12 @@ function createIndicators() {
 }
 
 function drawIndicator(ind, row) {
-  ind.el.style.width = `${ indicatorSize }px`;
-  ind.el.style.height = `${ indicatorSize }px`;
+  ind.el.style.width = `${indicatorSize}px`;
+  ind.el.style.height = `${indicatorSize}px`;
   
   ind.el.style.translate = 
-    `${ cubeSizeMarginX - indicatorMargin }px 
-    ${ cubeSizeMarginY + cubeSize / 2 - indicatorSize / 2 + row * cubeSize + row * cubeSizeGap }px`
+    `${cubeSizeMarginX - indicatorMargin}px 
+    ${cubeSizeMarginY + cubeSize / 2 - indicatorSize / 2 + row * cubeSize + row * cubeSizeGap}px`
 }
 
 function drawIndicatorSolved() {
@@ -561,13 +561,13 @@ function drawIndicatorSolved() {
     xPos = cubeSizeMarginX + wholeCubeWidth + indicatorSolvedMargin;
   }
 
-  indicators.s.el.style.width = `${ indSize }px`;
-  indicators.s.el.style.height = `${ indSize }px`;
+  indicators.s.el.style.width = `${indSize}px`;
+  indicators.s.el.style.height = `${indSize}px`;
   indicators.s.el.style.borderRadius = "50%";
 
   indicators.s.el.style.translate = 
-    `${ xPos }px 
-    ${ timeTextYPos + textSize / 2 - indicatorSolvedSize / 2 + (textSize * 2) * 0.079 }px`;
+    `${xPos}px 
+    ${timeTextYPos + textSize / 2 - indicatorSolvedSize / 2 + (textSize * 2) * 0.079}px`;
     // (textSize * 2) * 0.079 is for offsetting the circle so it aligns to the center of the text
 }
 
@@ -666,7 +666,7 @@ function keyPressed(event) {
 
   // Rows
   for (let i = 0; i < keyRowsAmount; i++) {
-    const row = `r${ i + 1 }`;
+    const row = `r${i + 1}`;
 
     if (keyRowsMap[i].includes(event.code)) {
       keyRows[row].press = true;
@@ -697,7 +697,7 @@ function keyReleased(event) {
   }
   // Rows
   for (let i = 0; i < keyRowsAmount; i++) {
-    const row = `r${ i + 1 }`;
+    const row = `r${i + 1}`;
 
     if (keyRowsMap[i].includes(event.code)) {
       keyRows[row].press = false;
