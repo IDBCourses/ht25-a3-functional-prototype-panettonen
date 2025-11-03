@@ -7,10 +7,16 @@ This game is inspired by the Rubik's cube.
 
 ## Keyboard shortcuts
 
+The shortcut keys are corresponding to the keys on your keyboard layout. 
+
 `T` - Hide/show timer  
 `V` - Hide/show total moves
 
 ## Controls
+
+The controls keys are based on the physical key locations, not the keyboard layout you use. The game has been tested on a US keyboard with a Colemak and a QWERTY layout. 
+
+The keys represented here are based on the QWERTY layout. 
 
 ### Controlling the cube
 
