@@ -487,6 +487,7 @@ function drawMovesText() {
 }
 
 
+// First step of creating the cubes
 function createCubeObjects() {
   for (let i = 1; i <= 9; i++) {
     cubeObjects[`c${i}`] = {
@@ -496,6 +497,7 @@ function createCubeObjects() {
   }
 }
 
+// For it to work, the cube objects need to have been added to the cubes array
 function drawCubeObjects() {
   for (let x = 0; x < 3; x++) {
     for (let y = 0; y < 3; y++) {
@@ -553,7 +555,7 @@ function drawIndicatorSolved() {
   // For changing the size when it moves
   let indSize = indicatorSolvedSize;
 
-  // Change position if the text is hidden
+  // Change position and size if the text is hidden
   if (hideTimer && hideMoves) {
     indSize *= 1.2;
     xPos = cubeSizeMarginX + wholeCubeWidth - indSize;
