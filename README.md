@@ -31,15 +31,15 @@ A S D
 Z X C
 ```
 
-Press and hold one of these key to select what row or column you want to move: 
+Press and hold one of these keys to select what row or column you want to move: 
 
-`W` - Up  
-`X` - Down  
-`A` - Left  
-`D` - Right  
-`S` - Center  
+`W` - Top row
+`X` - Bottom row
+`A` - Left column
+`D` - Right column
+`S` - Center row / column
 
-Then by selecting a key near the key you are holding down, the cubes move in the direction of the newly pressed key. 
+Then by pressing a key to the side of the key you are holding down, the cubes move in the direction of the newly pressed key. 
 
 For example, if you press and hold `X` and then press `C`, you move the bottom row to the right one step.
 
