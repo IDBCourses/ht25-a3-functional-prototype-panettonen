@@ -10,8 +10,8 @@ This game is inspired by the Rubik's cube.
 The shortcut keys are corresponding to the keys on your keyboard layout. 
 
 `T` - Hide/show timer  
-`V` - Hide/show total moves
-`Space` - Scramble the puzzle and start the timer
+`V` - Hide/show total moves  
+`Space` - Scramble the puzzle and start the timer  
 `Enter` - Reset it to the solved state
 
 ## Controls
