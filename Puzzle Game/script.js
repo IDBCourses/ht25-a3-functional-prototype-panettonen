@@ -221,7 +221,7 @@ function loop() {
   window.requestAnimationFrame(loop);
 }
 
-/** Change haveSwiped to true if the time between the row presses is low enough. The variable swipeRowsTimeLimit changes the time limit between two row presses */
+/** Change `haveSwiped` to true if the time between the row presses is low enough. The variable `swipeRowsTimeLimit` changes the time limit between two row presses */
 function checkRowSwipe() {
   getKeyRowsTime();
 
@@ -232,7 +232,7 @@ function checkRowSwipe() {
   if (row1Row2 && row2Row3 || row2Row3 && row3Row4) {
     haveSwiped = true;
 
-    // Remove the saved time for when the keys was pressed
+    // Remove the saved time for when the keys were pressed
     for (let i = 1; i <= keyRowsAmount; i++) {
       keyRows[`r${ i }`].time = null;
     }
@@ -246,7 +246,7 @@ function getKeyRowsTime() {
     if (keyRows[row].press) {
       if (!keyRows[row].havePressed) {
         keyRows[row].time = performance.now();
-        keyRows[row].havePressed = true; // keyUp event make it false again
+        keyRows[row].havePressed = true; // `keyUp` event make it false again
       }
     }
   }
@@ -291,8 +291,7 @@ function changeColorScheme() {
   indicators.r3.el.style.backgroundColor = currentColors.c3;
 }
 
-/** Take in the keyboard input to move the colors of the cube objects. 
- * One keypress move the colors of one row or column one step */
+/** Take in the keyboard input to move the colors of the cube objects. One keypress moves the colors of one row or column one step */
 function moveColors() {
   // Up
   if (moves.upLeft) {
@@ -418,7 +417,7 @@ function switchTwoColors(position1, position2) {
   cubes[p2.x][p2.y].color = tempColor1;
 }
 
-/** When the puzzle get solved, show the indicator for it and stop the timer and move counting */
+/** When the puzzle gets solved, show the indicator for it and stop the timer and move counting */
 function checkIfSolved() {
   let firstRowSolved = [];
   let secondRowSolved = [];
@@ -475,7 +474,7 @@ function drawMovesText() {
   movesText.style.fontSize = `${ textSize }px`;
   movesText.textContent = movesTotal;
 
-  // If timer is hidden, moves text takes the position of the timer
+  // If the timer is hidden, `movesText` takes the position of it
   if (hideTimer) {
     offset = 0;
   } else {
@@ -569,7 +568,7 @@ function drawIndicatorSolved() {
   indicators.s.el.style.translate = 
     `${ xPos }px 
     ${ timeTextYPos + textSize / 2 - indicatorSolvedSize / 2 + (textSize * 2) * 0.079 }px`;
-    // (textSize * 2) * 0.079 is for ofsetting the circle so it aligns to the center of the text
+    // (textSize * 2) * 0.079 is for offsetting the circle so it aligns to the center of the text
 }
 
 function keyPressed(event) {
